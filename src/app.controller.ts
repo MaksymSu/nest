@@ -11,8 +11,8 @@ export class AppController {
   }
 
 
-  @Get('/my')
-  getMy(): string {
-    return this.appService.getMy()
+  @Get('/users')
+  getUsers() {
+    return this.appService.getUsers()
   }
 }

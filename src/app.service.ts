@@ -6,7 +6,7 @@ export class AppService {
     return 'Hello World!';
   }
 
-  getMy(): string {
-    return 'My!';
+  getUsers(){
+    return [{id: '0', name: 'my'}];
   }
 }
