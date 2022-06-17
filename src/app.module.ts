@@ -9,7 +9,7 @@ import {NumberDataType} from "sequelize";
 @Module({
   imports: [
       ConfigModule.forRoot({
-          envFilePath: '.env'
+          envFilePath: `.${process.env.NODE_ENV}.env`
       }),
 
       SequelizeModule.forRoot({
