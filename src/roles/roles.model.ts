@@ -23,5 +23,5 @@ export class Role extends Model<Role, RoleCreationAttrs> {
     description: string;
 
     @BelongsToMany(() => User, () => UserRole)
-    users: Role[];
+    users: User[];
 }
