@@ -13,13 +13,21 @@ export class RolesService {
         return role;
     }
 
+    async updateRole(dto: CreateRoleDto) {
+        let role = await  this.roleRepository.findOne({where: {'name': dto.name}});
+        if(role) {
+            await role.update(dto);
+        }
+        return role;
+    }
+
     async getAllRoles() {
         const roles = await this.roleRepository.findAll();
         return roles;
     }
 
     async getRoleByName(name: string) {
-        const role = await this.roleRepository.findOne({where: {name}})
+        const role = await this.roleRepository.findOne({where: {name}});
         return role;
     }
 
@@ -27,5 +35,7 @@ export class RolesService {
         await this.roleRepository.destroy({where: {name}});
         return 'ok';
     }
+
+
 
 }

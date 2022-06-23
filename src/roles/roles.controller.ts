@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {RolesService} from "./roles.service";
 import {CreateRoleDto} from "./dto/create-role.dto";
 import {JSON} from "sequelize";
@@ -10,6 +10,11 @@ export class RolesController {
     @Post()
     createRole(@Body() roleDto: CreateRoleDto) {
         return this.rolesService.createRole(roleDto);
+    }
+
+    @Put()
+    updateRole(@Body() roleDto: CreateRoleDto) {
+        return this.rolesService.updateRole(roleDto);
     }
 
     @Get()
