@@ -36,6 +36,4 @@ export class RolesService {
         return 'ok';
     }
 
-
-
 }
