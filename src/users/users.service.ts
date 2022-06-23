@@ -30,7 +30,13 @@ export class UsersService {
     }
 
     async getByRole(roleName: string) {
-        const users = await this.userRepository.findAll({include: {model: Role, where: {name: roleName}}});
+        const users = await this.userRepository.findAll({
+            include: {
+                model: Role,
+                where: {name: roleName},
+                attributes: [],
+            },
+        });
         return users;
     }
 
