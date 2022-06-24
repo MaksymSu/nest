@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {RolesService} from "./roles.service";
 import {CreateRoleDto} from "./dto/create-role.dto";
-import {JSON} from "sequelize";
+import {SetPermissionDto} from "./dto/set-permission.dto";
 
 @Controller('api/roles')
 export class RolesController {
@@ -32,6 +32,10 @@ export class RolesController {
         return this.rolesService.getRoleByName(name);
     }
 
-
+    @Post('/permit')
+    setRolePermission(@Body() permissionDto: SetPermissionDto) {
+        //console.log('ok', permissionDto);
+        return this.rolesService.setRolePermission(permissionDto);
+    }
 
 }

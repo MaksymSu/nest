@@ -36,6 +36,7 @@ export class UsersService {
                 where: {name: roleName},
                 attributes: [],
             },
+            //attributes: ['email']
         });
         return users;
     }
