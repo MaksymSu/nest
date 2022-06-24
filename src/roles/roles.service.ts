@@ -26,10 +26,10 @@ export class RolesService {
 
     async getAllRoles() {
         const roles = await this.roleRepository.findAll({
-            attributes: ['name'],
+            attributes: ['name', 'description', 'type'],
             include: {
                 model: Role,
-                attributes: ['name', 'description'],
+                attributes: ['name', 'description', 'type'],
                 through: {
                     attributes: []
                 }
@@ -63,8 +63,10 @@ export class RolesService {
 
         if(parent && child) {
             await parent.$add('children', [child.id]);
-            return parent;
         }
+
+        return {parent, child};
+
     }
 
 }

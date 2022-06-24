@@ -28,7 +28,7 @@ export class UsersService {
                 },
                 attributes: ['name']
             },
-            //attributes: ['name', 'email'],
+            attributes: ['name', 'email'],
 
         });
         return users;
