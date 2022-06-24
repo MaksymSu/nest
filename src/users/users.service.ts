@@ -20,7 +20,17 @@ export class UsersService {
     }
 
     async getAllUsers() {
-        const users = await this.userRepository.findAll({include: {all: true}});
+        const users = await this.userRepository.findAll({
+            include: {
+                model: Role,
+                through: {
+                    attributes: []
+                },
+                attributes: ['name']
+            },
+            attributes: ['name', 'email'],
+
+        });
         return users;
     }
 
