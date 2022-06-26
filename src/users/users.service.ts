@@ -42,6 +42,7 @@ export class UsersService {
                 attributes: ['name'],
                 include: [{
                     model: Role,
+                    attributes: ['name'],
                     through: {
                         attributes: []
                     }

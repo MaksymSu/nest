@@ -39,7 +39,23 @@ export class RolesService {
     }
 
     async getRoleByName(name: string) {
-        const role = await this.roleRepository.findOne({where: {name}});
+        const role = await this.roleRepository.findOne({
+            where: {name},
+            include: {
+                model: Role,
+                attributes: ['name'],
+                include: [{
+                    model: Role,
+                    attributes: ['name'],
+                    through: {
+                        attributes: []
+                    }
+                }],
+                through: {
+                    attributes: [],
+                }
+            },
+        });
         return role;
     }
 
