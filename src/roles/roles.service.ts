@@ -43,10 +43,10 @@ export class RolesService {
             where: {name},
             include: {
                 model: Role,
-                attributes: ['name'],
+                attributes: ['name', 'type'],
                 include: [{
                     model: Role,
-                    attributes: ['name'],
+                    attributes: ['name', 'type'],
                     through: {
                         attributes: []
                     }
@@ -56,6 +56,13 @@ export class RolesService {
                 }
             },
         });
+
+        //const rolesArr1 = role['dataValues']['children'];
+        //if(rolesArr1) {
+         //   const rolesArr2 = role['dataValues']['children'];
+        //}
+
+
         return role;
     }
 
