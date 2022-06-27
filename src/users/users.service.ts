@@ -13,10 +13,7 @@ export class UsersService {
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto);
-        const role = await this.roleService.getRoleByName('user');
-        await user.$set('roles', [role.id]);
-
-        return user;
+        return this.setRole(user, 'admin');
     }
 
     async getAllUsers() {
@@ -66,6 +63,12 @@ export class UsersService {
             //attributes: ['email']
         });
         return users;
+    }
+
+    async setRole(user: User, roleName: string) {
+        const role = await this.roleService.getRoleByName(roleName);
+        await user.$set('roles', [role.id]);
+        return user;
     }
 
 }
