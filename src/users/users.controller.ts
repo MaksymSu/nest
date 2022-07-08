@@ -1,6 +1,6 @@
 import {UsersService} from "./users.service";
 import {User} from "./users.model";
-import {Body, Controller, Get, Param, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post} from "@nestjs/common";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
 
@@ -21,6 +21,11 @@ export class UsersController {
     createUser(@Body() userDto: CreateUserDto) {
 
         return this.usersService.createUser(userDto);
+    }
+
+    @Delete('/:email')
+    delete(@Param('email') email: string) {
+        return this.usersService.deleteUser(email);
     }
 
     @Get('/:email')

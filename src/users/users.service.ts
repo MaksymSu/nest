@@ -20,6 +20,14 @@ export class UsersService {
         }
     }
 
+    async deleteUser(email: string) {
+        await this.userRepository.destroy({
+            where: {
+                email: email
+            }
+        })
+    }
+
     async getAllUsers() {
         const users = await this.userRepository.findAll({
             include: {
