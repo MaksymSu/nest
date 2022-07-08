@@ -12,8 +12,12 @@ export class UsersService {
                 private roleService: RolesService) {}
 
     async createUser(dto: CreateUserDto) {
-        const user = await this.userRepository.create(dto);
-        return this.setRole(user, 'admin');
+        try {
+            const user = await this.userRepository.create(dto);
+            return this.setRole(user, 'admin');
+        } catch (e) {
+            return e
+        }
     }
 
     async getAllUsers() {
