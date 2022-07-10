@@ -20,6 +20,11 @@ export class UsersService {
         }
     }
 
+    async updateUser(dto: CreateUserDto) {
+        //const user = await  this.getByEmail(dto.email)
+        //user.
+    }
+
     async deleteUser(email: string) {
         await this.userRepository.destroy({
             where: {

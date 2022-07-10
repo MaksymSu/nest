@@ -19,8 +19,12 @@ export class UsersController {
 
     @Post()
     createUser(@Body() userDto: CreateUserDto) {
-
         return this.usersService.createUser(userDto);
+    }
+
+    @Post()
+    updateUser(@Body() userDto: CreateUserDto) {
+        return this.usersService.updateUser(userDto)
     }
 
     @Delete('/:email')
