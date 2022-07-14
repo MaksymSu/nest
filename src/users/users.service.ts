@@ -4,6 +4,7 @@ import {InjectModel} from "@nestjs/sequelize";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {RolesService} from "../roles/roles.service";
 import {Role} from "../roles/roles.model";
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -21,8 +22,16 @@ export class UsersService {
     }
 
     async updateUser(dto: CreateUserDto) {
-        //const user = await  this.getByEmail(dto.email)
-        //user.
+        console.log('>>>', dto)
+        const user = dto.id ? await this.getById(dto.id) : await this.getByEmail(dto.email);
+        user.name = dto.name;
+
+        if(dto.password) {
+            user.password = await bcrypt.hash(dto.password, 5);
+        }
+
+        user.email = dto.email;
+        return user.save();
     }
 
     async deleteUser(email: string) {
@@ -42,7 +51,7 @@ export class UsersService {
                 },
                 attributes: ['name']
             },
-            attributes: ['name', 'email'],
+            attributes: ['id', 'name', 'email'],
 
         });
         return users;
@@ -51,6 +60,28 @@ export class UsersService {
     async getByEmail(email: string) {
         const user = await this.userRepository.findOne({
             where: {email},
+            include: {
+                model: Role,
+                attributes: ['name'],
+                include: [{
+                    model: Role,
+                    attributes: ['name'],
+                    through: {
+                        attributes: []
+                    }
+                }],
+                through: {
+                    attributes: [],
+                }
+            },
+
+        });
+        return user;
+    }
+
+    async getById(id: number) {
+        const user = await this.userRepository.findOne({
+            where: {id},
             include: {
                 model: Role,
                 attributes: ['name'],

@@ -26,10 +26,10 @@ export class RolesService {
 
     async getAllRoles() {
         const roles = await this.roleRepository.findAll({
-            attributes: ['name', 'description', 'type'],
+            attributes: ['id', 'name', 'description', 'type'],
             include: {
                 model: Role,
-                attributes: ['name', 'description', 'type'],
+                attributes: ['id', 'name', 'description', 'type'],
                 through: {
                     attributes: []
                 }
