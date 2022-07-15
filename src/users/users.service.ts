@@ -15,7 +15,8 @@ export class UsersService {
     async createUser(dto: CreateUserDto) {
         try {
             const user = await this.userRepository.create(dto);
-            return this.setRole(user, 'admin');
+            await this.setRole(user, 'user');
+            return this.getById(user.id);
         } catch (e) {
             return e
         }
@@ -69,10 +70,10 @@ export class UsersService {
             where: {email},
             include: {
                 model: Role,
-                attributes: ['name'],
+                attributes: ['id', 'name'],
                 include: [{
                     model: Role,
-                    attributes: ['name'],
+                    attributes: ['id', 'name'],
                     through: {
                         attributes: []
                     }
@@ -91,10 +92,10 @@ export class UsersService {
             where: {id},
             include: {
                 model: Role,
-                attributes: ['name'],
+                attributes: ['id', 'name'],
                 include: [{
                     model: Role,
-                    attributes: ['name'],
+                    attributes: ['id', 'name'],
                     through: {
                         attributes: []
                     }
