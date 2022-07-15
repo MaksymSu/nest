@@ -46,10 +46,10 @@ export class UsersService {
         const users = await this.userRepository.findAll({
             include: {
                 model: Role,
-                attributes: ['name'],
+                attributes: ['id', 'name'],
                 include: [{
                     model: Role,
-                    attributes: ['name'],
+                    attributes: ['id', 'name'],
                     through: {
                         attributes: []
                     }
