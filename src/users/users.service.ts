@@ -14,7 +14,8 @@ export class UsersService {
 
     async createUser(dto: CreateUserDto) {
         try {
-            const user = await this.userRepository.create(dto);
+            const password = await bcrypt.hash(dto.password, 5);
+            const user = await this.userRepository.create({...dto, password});
             await this.setRole(user, 'user');
             return this.getById(user.id);
         } catch (e) {
