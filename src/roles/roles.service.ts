@@ -13,7 +13,8 @@ export class RolesService {
 
     async createRole(dto: CreateRoleDto) {
         const role = await this.roleRepository.create(dto);
-        return role;
+        const fullRole = await this.getRoleByName(role.name);
+        return fullRole;
     }
 
     async updateRole(dto: CreateRoleDto) {
@@ -56,12 +57,6 @@ export class RolesService {
                 }
             },
         });
-
-        //const rolesArr1 = role['dataValues']['children'];
-        //if(rolesArr1) {
-         //   const rolesArr2 = role['dataValues']['children'];
-        //}
-
 
         return role;
     }
