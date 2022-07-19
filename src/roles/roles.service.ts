@@ -18,10 +18,10 @@ export class RolesService {
     }
 
     async updateRole(dto: CreateRoleDto) {
-        let role = await  this.roleRepository.findOne({where: {'name': dto.name}});
-        if(role) {
-            await role.update(dto);
-        }
+
+        const role = dto.id ? await this.getRoleById(dto.id) : await this.getRoleByName(dto.name);
+        role.update(dto);
+
         return role;
     }
 
@@ -42,6 +42,29 @@ export class RolesService {
     async getRoleByName(name: string) {
         const role = await this.roleRepository.findOne({
             where: {name},
+            include: {
+                model: Role,
+                attributes: ['name', 'type'],
+                include: [{
+                    model: Role,
+                    attributes: ['name', 'type'],
+                    through: {
+                        attributes: []
+                    }
+                }],
+                through: {
+                    attributes: [],
+                }
+            },
+        });
+
+        return role;
+    }
+
+
+    async getRoleById(id: number) {
+        const role = await this.roleRepository.findOne({
+            where: {id},
             include: {
                 model: Role,
                 attributes: ['name', 'type'],
