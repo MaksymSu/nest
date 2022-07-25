@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Role} from "./roles.model";
 import {CreateRoleDto} from "./dto/create-role.dto";
-import {type} from "os";
 import {SetPermissionDto} from "./dto/set-permission.dto";
-import {RolePermission} from "./roles-permissions.model";
+import {SetPermissionsDtoByIds} from "./dto/set-permissions-by-ids.dto";
 
 @Injectable()
 export class RolesService {
@@ -108,6 +107,25 @@ export class RolesService {
 
         return {parent, child};
 
+    }
+
+    async setRolePermissionsByIds(dto: SetPermissionsDtoByIds) {
+
+        try {
+            const role = await this.roleRepository.findOne({
+                where: {'id': dto.parentId}
+            });
+
+            if (!role) {
+                throw "Role id not found"
+            }
+
+            await role.$set('children', dto.childrenIds);
+
+            return role
+        } catch (e) {
+            return e
+        }
     }
 
 }

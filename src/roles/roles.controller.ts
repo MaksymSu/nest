@@ -2,6 +2,7 @@ import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {RolesService} from "./roles.service";
 import {CreateRoleDto} from "./dto/create-role.dto";
 import {SetPermissionDto} from "./dto/set-permission.dto";
+import {SetPermissionsDtoByIds} from "./dto/set-permissions-by-ids.dto";
 
 @Controller('api/roles')
 export class RolesController {
@@ -36,6 +37,11 @@ export class RolesController {
     setRolePermission(@Body() permissionDto: SetPermissionDto) {
         //console.log('ok', permissionDto);
         return this.rolesService.setRolePermission(permissionDto);
+    }
+
+    @Post('/set')
+    setPermissionsByIds(@Body() dto: SetPermissionsDtoByIds) {
+        return this.rolesService.setRolePermissionsByIds(dto)
     }
 
 }
