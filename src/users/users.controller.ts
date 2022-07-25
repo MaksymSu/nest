@@ -3,6 +3,7 @@ import {User} from "./users.model";
 import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
+import {SetRoleDto} from "./dto/set-role.dto";
 
 
 @Controller('api/users')
@@ -40,6 +41,11 @@ export class UsersController {
     @Get('/role/:role')
     getByRole(@Param('role') roleName: string) {
         return this.usersService.getByRole(roleName);
+    }
+
+    @Post('/role')
+    setRole(@Body() setDto: SetRoleDto) {
+        return this.usersService.setRoleById(setDto)
     }
 
 

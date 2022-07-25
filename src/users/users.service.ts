@@ -123,10 +123,26 @@ export class UsersService {
     }
 
     async setRole(user: User, roleName: string) {
-        const role = await this.roleService.getRoleByName(roleName);
-        await user.$set('roles', [role.id]);
-        //user.roles = user[roleName];
-        return user;
+        try {
+            const role = await this.roleService.getRoleByName(roleName);
+            await user.$set('roles', [role.id]);
+            //user.roles = user[roleName];
+            return user;
+        } catch (e) {
+            return e
+        }
+    }
+
+    async setRoleById(dto) {
+        try {
+            const user = await this.getById(dto.userId);
+            const role = await this.roleService.getRoleByName(dto.roleName);
+            await user.$set('roles', [role.id]);
+
+            return user;
+        } catch (e) {
+            return e;
+        }
     }
 
 }
