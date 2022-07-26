@@ -93,10 +93,10 @@ export class UsersService {
             where: {id},
             include: {
                 model: Role,
-                attributes: ['id', 'name'],
+                attributes: ['id', 'name', 'description'],
                 include: [{
                     model: Role,
-                    attributes: ['id', 'name'],
+                    attributes: ['id', 'name', 'description'],
                     through: {
                         attributes: []
                     }
@@ -139,7 +139,7 @@ export class UsersService {
             const role = await this.roleService.getRoleByName(dto.roleName);
             await user.$set('roles', [role.id]);
 
-            return user;
+            return await this.getById(dto.userId);
         } catch (e) {
             return e;
         }
