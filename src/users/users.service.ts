@@ -5,12 +5,13 @@ import {CreateUserDto} from "./dto/create-user.dto";
 import {RolesService} from "../roles/roles.service";
 import {Role} from "../roles/roles.model";
 import * as bcrypt from 'bcryptjs';
+import {Sequelize} from "sequelize-typescript";
 
 @Injectable()
 export class UsersService {
 
     constructor(@InjectModel(User) private userRepository: typeof User,
-                private roleService: RolesService) {}
+                private roleService: RolesService, private sequelize: Sequelize) {}
 
     async createUser(dto: CreateUserDto) {
         try {
@@ -135,11 +136,18 @@ export class UsersService {
 
     async setRoleById(dto) {
         try {
-            const user = await this.getById(dto.userId);
-            const role = await this.roleService.getRoleByName(dto.roleName);
-            await user.$set('roles', [role.id]);
+                const user = await this.getById(dto.userId);
 
-            return await this.getById(dto.userId);
+                const role = await this.roleService.getRoleByName(dto.roleName);
+
+                 await this.sequelize.transaction(async t => {
+                    const transactionHost = {transaction: t};
+
+                    await user.$set('roles', [role.id]);
+                });
+
+                return await this.getById(dto.userId);
+
         } catch (e) {
             return e;
         }
