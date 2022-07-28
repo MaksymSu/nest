@@ -25,7 +25,7 @@ export class UsersService {
     }
 
     async updateUser(dto: CreateUserDto) {
-        console.log('>>>', dto)
+        //console.log('>>>', dto)
         const user = dto.id ? await this.getById(dto.id) : await this.getByEmail(dto.email);
         user.name = dto.name;
 
@@ -140,11 +140,7 @@ export class UsersService {
 
                 const role = await this.roleService.getRoleByName(dto.roleName);
 
-                 await this.sequelize.transaction(async t => {
-                    const transactionHost = {transaction: t};
-
-                    await user.$set('roles', [role.id]);
-                });
+                 await this.sequelize.transaction(async t => await user.$set('roles', [role.id]));
 
                 return await this.getById(dto.userId);
 
