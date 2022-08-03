@@ -140,7 +140,7 @@ export class UsersService {
 
                 const role = await this.roleService.getRoleByName(dto.roleName);
 
-                 await this.sequelize.transaction(async t => await user.$set('roles', [role.id]));
+                await this.sequelize.transaction(async t => await user.$set('roles', [role.id]));
 
                 return await this.getById(dto.userId);
 

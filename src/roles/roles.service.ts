@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import {forwardRef, Inject, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Role} from "./roles.model";
 import {CreateRoleDto} from "./dto/create-role.dto";
 import {SetPermissionDto} from "./dto/set-permission.dto";
 import {SetPermissionsDtoByIds} from "./dto/set-permissions-by-ids.dto";
+import {UsersService} from "../users/users.service";
 
 @Injectable()
 export class RolesService {
 
-    constructor(@InjectModel(Role) private roleRepository: typeof Role) {}
+    constructor(@InjectModel(Role) private roleRepository: typeof Role, @Inject(forwardRef(() => UsersService)) private userService: UsersService) {}
 
     async createRole(dto: CreateRoleDto) {
         const role = await this.roleRepository.create(dto);
@@ -84,8 +85,16 @@ export class RolesService {
     }
 
     async deleteRole(name: string) {
-        await this.roleRepository.destroy({where: {name}});
-        return 'ok';
+
+        const users = await this.userService.getByRole(name);
+
+        if(users.length === 0) {
+            await this.roleRepository.destroy({where: {name}});
+
+            return 'ok';
+        }
+
+        return 'err'
     }
 
     async setRolePermission(dto: SetPermissionDto) {
