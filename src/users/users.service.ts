@@ -47,31 +47,45 @@ export class UsersService {
     }
 
     async getAllUsers(params) {
-        console.log(params)
 
-        const users = await this.userRepository.findAll({
+        const query = {
             include: {
                 model: Role,
                 attributes: ['id', 'name', 'description'],
+
                 include: [{
                     model: Role,
                     attributes: ['id', 'name', 'description'],
                     through: {
                         attributes: []
-                    }
+                    },
                 }],
                 through: {
                     attributes: [],
                 }
             },
             attributes: ['id', 'name', 'email'],
-            where: {
-                email: {
-                    [sequelize.Op.like]: '%' + params.filter + '%'
-                }
-            }
+        };
 
-        });
+        const where = fields => {
+            return {
+                [sequelize.Op.or]: fields.map(field => {
+                    return {
+                        [field]: {
+                            [sequelize.Op.like]: '%' + params.filter + '%'
+                        }
+                    }
+                })
+            }
+        };
+
+       // query['where'] = where(['name', 'email']);
+
+      //  query.include['where'] = where(['name']);
+
+
+
+        const users = await this.userRepository.findAll(query);
         return users;
     }
 
