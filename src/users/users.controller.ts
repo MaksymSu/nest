@@ -1,6 +1,6 @@
 import {UsersService} from "./users.service";
 import {User} from "./users.model";
-import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Query} from "@nestjs/common";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
 import {SetRoleDto} from "./dto/set-role.dto";
@@ -14,8 +14,9 @@ export class UsersController {
     @ApiOperation({summary: 'Getting all users'})
     @ApiResponse({status: 200, type: User})
     @Get()
-    getAll() {
-        return this.usersService.getAllUsers();
+    getAll(@Query() params ) {
+
+        return this.usersService.getAllUsers(params);
     }
 
     @Post()

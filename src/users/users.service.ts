@@ -6,6 +6,7 @@ import {RolesService} from "../roles/roles.service";
 import {Role} from "../roles/roles.model";
 import * as bcrypt from 'bcryptjs';
 import {Sequelize} from "sequelize-typescript";
+import Op from "sequelize/types/operators";
 
 @Injectable()
 export class UsersService {
@@ -45,7 +46,9 @@ export class UsersService {
         })
     }
 
-    async getAllUsers() {
+    async getAllUsers(params) {
+        console.log(params)
+
         const users = await this.userRepository.findAll({
             include: {
                 model: Role,
@@ -62,6 +65,11 @@ export class UsersService {
                 }
             },
             attributes: ['id', 'name', 'email'],
+            where: {
+                email: {
+                    [Op.like]: 'a'
+                }
+            }
 
         });
         return users;
