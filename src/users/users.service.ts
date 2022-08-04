@@ -6,7 +6,7 @@ import {RolesService} from "../roles/roles.service";
 import {Role} from "../roles/roles.model";
 import * as bcrypt from 'bcryptjs';
 import {Sequelize} from "sequelize-typescript";
-import Op from "sequelize/types/operators";
+import * as sequelize from "sequelize";
 
 @Injectable()
 export class UsersService {
@@ -67,7 +67,7 @@ export class UsersService {
             attributes: ['id', 'name', 'email'],
             where: {
                 email: {
-                    [Op.like]: 'a'
+                    [sequelize.Op.like]: '%' + params.filter + '%'
                 }
             }
 
