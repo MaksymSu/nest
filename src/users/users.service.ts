@@ -7,6 +7,7 @@ import {Role} from "../roles/roles.model";
 import * as bcrypt from 'bcryptjs';
 import {Sequelize} from "sequelize-typescript";
 import * as sequelize from "sequelize";
+import {query} from "express";
 
 @Injectable()
 export class UsersService {
@@ -52,7 +53,6 @@ export class UsersService {
             include: {
                 model: Role,
                 attributes: ['id', 'name', 'description'],
-
                 include: [{
                     model: Role,
                     attributes: ['id', 'name', 'description'],
@@ -65,8 +65,12 @@ export class UsersService {
                 }
             },
             attributes: ['id', 'name', 'email'],
+            //limit: params.n,
+            //offset: params.from
+            order: [sequelize.literal('name DESC')]
         };
 
+        /*
         const where = fields => {
             return {
                 [sequelize.Op.or]: fields.map(field => {
@@ -79,13 +83,11 @@ export class UsersService {
             }
         };
 
-       // query['where'] = where(['name', 'email']);
-
-      //  query.include['where'] = where(['name']);
-
-
-
+        query['where'] = where(['name', 'email']);
+        query.include['where'] = where(['name']);
+        */
         const users = await this.userRepository.findAll(query);
+
         return users;
     }
 

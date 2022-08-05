@@ -1,0 +1,8 @@
+           where: {
+                    [sequelize.Op.or]:
+                        {
+                            name: {
+                                [sequelize.Op.like]: '%' + params.filter + '%'
+                            }
+                        }
+                    },
