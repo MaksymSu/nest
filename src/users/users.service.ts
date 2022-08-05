@@ -65,12 +65,23 @@ export class UsersService {
                 }
             },
             attributes: ['id', 'name', 'email'],
-            //limit: params.n,
-            //offset: params.from
-            order: [sequelize.literal('name DESC')]
+
+            where: sequelize.where(sequelize.fn(
+                'concat',
+                sequelize.col('roles.name'), ' ',
+                sequelize.col('User.name'), ' ',
+                sequelize.col('User.email')
+            ), {
+                [sequelize.Op.like]: '%' + params.filter + '%'
+            })
+
+
+           // limit: params.n,
+            //offset: params.from,
+           // order: [sequelize.literal('name ' + params.sort)]
         };
 
-        /*
+
         const where = fields => {
             return {
                 [sequelize.Op.or]: fields.map(field => {
@@ -83,9 +94,11 @@ export class UsersService {
             }
         };
 
-        query['where'] = where(['name', 'email']);
-        query.include['where'] = where(['name']);
-        */
+        //query['where'] = where(['name', 'email', sequelize.col('roles.name')]);
+        //query.include['where'] = where(['name']);
+
+
+
         const users = await this.userRepository.findAll(query);
 
         return users;
