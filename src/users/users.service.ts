@@ -51,34 +51,14 @@ export class UsersService {
 
         const query = {
 
-            //distinct: true,
-
             include: {
                 model: Role,
                 attributes: ['id', 'name', 'description'],
-                /*
-                include: [{
-                    model: Role,
-                    attributes: ['id', 'name', 'description'],
-                    through: {
-                        attributes: []
-                    },
-                }],
-                */
                 through: {
                     attributes: [],
                 }
             },
             attributes: ['id', 'name', 'email'],
-
-           // order: [sequelize.literal('name ' + params.order)],
-
-           // offset: Number(params.offset),
-
-            //limit: Number(params.n),
-
-            //subQuery:false
-           // groupBy: ['User.id']
         };
 
 
@@ -98,10 +78,8 @@ export class UsersService {
             query['order'] = [sequelize.literal('name ' + params.order)]
         }
 
-
         if(params.offset) {
             query['offset'] = Number(params.offset);
-            //query['subQuery'] = false
         }
 
         if(params.n) {
@@ -132,6 +110,10 @@ export class UsersService {
         const users = await this.userRepository.findAll(query);
 
         return users;
+    }
+
+    async getUsersN() {
+        return await this.userRepository.count();
     }
 
     async getByEmail(email: string) {
