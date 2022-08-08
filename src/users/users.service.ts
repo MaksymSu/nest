@@ -50,9 +50,13 @@ export class UsersService {
     async getAllUsers(params) {
 
         const query = {
+
+            //distinct: true,
+
             include: {
                 model: Role,
                 attributes: ['id', 'name', 'description'],
+                /*
                 include: [{
                     model: Role,
                     attributes: ['id', 'name', 'description'],
@@ -60,28 +64,53 @@ export class UsersService {
                         attributes: []
                     },
                 }],
+                */
                 through: {
                     attributes: [],
                 }
             },
             attributes: ['id', 'name', 'email'],
 
-            where: sequelize.where(sequelize.fn(
+           // order: [sequelize.literal('name ' + params.order)],
+
+           // offset: Number(params.offset),
+
+            //limit: Number(params.n),
+
+            //subQuery:false
+           // groupBy: ['User.id']
+        };
+
+
+        if(params.filter) {
+            query['where'] = sequelize.where(sequelize.fn(
                 'concat',
                 sequelize.col('roles.name'), ' ',
                 sequelize.col('User.name'), ' ',
                 sequelize.col('User.email')
             ), {
                 [sequelize.Op.like]: '%' + params.filter + '%'
-            })
+            });
+        }
 
 
-           // limit: params.n,
-            //offset: params.from,
-           // order: [sequelize.literal('name ' + params.sort)]
-        };
+        if(params.order) {
+            query['order'] = [sequelize.literal('name ' + params.order)]
+        }
 
 
+        if(params.offset) {
+            query['offset'] = Number(params.offset);
+            //query['subQuery'] = false
+        }
+
+        if(params.n) {
+            query['limit'] = Number(params.n);
+            query['subQuery'] = false
+        }
+
+
+/*
         const where = fields => {
             return {
                 [sequelize.Op.or]: fields.map(field => {
@@ -94,11 +123,12 @@ export class UsersService {
             }
         };
 
-        //query['where'] = where(['name', 'email', sequelize.col('roles.name')]);
-        //query.include['where'] = where(['name']);
+        if(params.filter) {
+            query['where'] = where(['name', 'email']);
+            query.include['where'] = where(['name']);
+        }
 
-
-
+*/
         const users = await this.userRepository.findAll(query);
 
         return users;
