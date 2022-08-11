@@ -53,7 +53,7 @@ export class UsersService {
 
             include: {
                 model: Role,
-                attributes: ['id', 'name', 'description'],
+                attributes: ['id', 'name', 'description', 'type'],
                 through: {
                     attributes: [],
                 }
@@ -143,14 +143,15 @@ export class UsersService {
             where: {id},
             include: {
                 model: Role,
-                attributes: ['id', 'name', 'description'],
+                attributes: ['id', 'name', 'description', 'type'],
+                /*
                 include: [{
                     model: Role,
                     attributes: ['id', 'name', 'description'],
                     through: {
                         attributes: []
                     }
-                }],
+                }],*/
                 through: {
                     attributes: [],
                 }

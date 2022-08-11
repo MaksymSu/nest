@@ -67,10 +67,10 @@ export class RolesService {
             where: {id},
             include: {
                 model: Role,
-                attributes: ['name', 'type'],
+                attributes: ['id', 'name', 'type', 'description'],
                 include: [{
                     model: Role,
-                    attributes: ['name', 'type'],
+                    attributes: ['id', 'name', 'type', 'description'],
                     through: {
                         attributes: []
                     }
@@ -121,9 +121,10 @@ export class RolesService {
     async setRolePermissionsByIds(dto: SetPermissionsDtoByIds) {
 
         try {
-            const role = await this.roleRepository.findOne({
-                where: {'id': dto.parentId}
-            });
+            const role = await this.getRoleById(dto.parentId);
+                //await this.roleRepository.findOne({
+                //where: {'id': dto.parentId}
+            //});
 
             if (!role) {
                 throw "Role id not found"
@@ -131,7 +132,7 @@ export class RolesService {
 
             await role.$set('children', dto.childrenIds);
 
-            return role
+            return await this.getRoleById(dto.parentId);
         } catch (e) {
             return e
         }
