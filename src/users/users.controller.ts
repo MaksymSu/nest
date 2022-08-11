@@ -20,8 +20,8 @@ export class UsersController {
     }
 
     @Get('/count')
-    getCount() {
-        return this.usersService.getUsersN();
+    getCount(@Query() params) {
+        return this.usersService.getUsersN(params);
     }
 
     @Post()

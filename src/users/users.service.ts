@@ -112,8 +112,32 @@ export class UsersService {
         return users;
     }
 
-    async getUsersN() {
-        return await this.userRepository.count();
+    async getUsersN(params) {
+        if (!params.filter || !params || params.filter  == '') {
+            return await this.userRepository.count();
+        }
+
+        const query = {
+
+            include: {
+                model: Role,
+                attributes: [],
+                through: {
+                    attributes: [],
+                }
+            },
+            attributes: [],
+            where: sequelize.where(sequelize.fn(
+                'concat',
+                sequelize.col('roles.name'), ' ',
+                sequelize.col('User.name'), ' ',
+                sequelize.col('User.email')
+            ), {
+                [sequelize.Op.like]: '%' + params.filter + '%'
+            })
+        };
+
+        return await this.userRepository.findAll(query).then(response => response.length);
     }
 
     async getByEmail(email: string) {
