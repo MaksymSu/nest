@@ -65,9 +65,9 @@ export class UsersService {
         if(params.filter) {
             query['where'] = sequelize.where(sequelize.fn(
                 'concat',
-                sequelize.col('roles.name'), ' ',
+                sequelize.col('User.email'), ' ',
                 sequelize.col('User.name'), ' ',
-                sequelize.col('User.email')
+                sequelize.col('roles.name')
             ), {
                 [sequelize.Op.like]: '%' + params.filter + '%'
             });
