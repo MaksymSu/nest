@@ -223,4 +223,49 @@ export class UsersService {
         }
     }
 
+
+    async fill(n) {
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+
+        function getRandomArbitrary(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        const makeStr = (min, max) => {
+            const alfa = 'qwertyuiopasdfghjklzxcvbnm1234567890';
+            let str = '';
+            for (let j = 0; j < getRandomArbitrary(min, max); j++) {
+                str += alfa[getRandomInt(alfa.length)]
+            }
+
+            return str;
+        };
+
+        for (let i = 0; i < n; i++) {
+            let email = '';
+            let name = '';
+            let password= '';
+
+            email = makeStr(3, 12);
+            email += '@';
+            email = makeStr(3, 10);
+            email += '.';
+            email = makeStr(2, 4);
+
+            password = makeStr(6, 12);
+
+            name = makeStr(4, 10);
+
+            this.createUser({email, name, password, id:undefined})
+
+        }
+
+        return n;
+
+    }
+
 }

@@ -54,5 +54,10 @@ export class UsersController {
         return this.usersService.setRoleById(setDto)
     }
 
+    @Get('/fill/:n')
+    fillUsers(@Param('n') n: number) {
+        return this.usersService.fill(n)
+    }
+
 
 }
