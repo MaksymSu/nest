@@ -7,7 +7,6 @@ import {Role} from "../roles/roles.model";
 import * as bcrypt from 'bcryptjs';
 import {Sequelize} from "sequelize-typescript";
 import * as sequelize from "sequelize";
-import {query} from "express";
 
 @Injectable()
 export class UsersService {
@@ -145,10 +144,10 @@ export class UsersService {
             where: {email},
             include: {
                 model: Role,
-                attributes: ['id', 'name'],
+                attributes: ['id', 'name', 'description'],
                 include: [{
                     model: Role,
-                    attributes: ['id', 'name'],
+                    attributes: ['id', 'name', 'description'],
                     through: {
                         attributes: []
                     }

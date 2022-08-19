@@ -11,7 +11,7 @@ export class UsersController {
 
     constructor(private usersService: UsersService) {}
 
-    @ApiOperation({summary: 'Getting all users'})
+    @ApiOperation({summary: 'Getting all users + roles'})
     @ApiResponse({status: 200, type: User})
     @Get()
     getAll(@Query() params ) {
