@@ -14,12 +14,12 @@ export class UsersService {
     constructor(@InjectModel(User) private userRepository: typeof User,
                 private roleService: RolesService, private sequelize: Sequelize) {}
 
-    async createUser(dto: CreateUserDto) {
+    async createUser(dto: CreateUserDto, registration: boolean = false) {
         try {
             const password = await bcrypt.hash(dto.password, 5);
             const user = await this.userRepository.create({...dto, password});
             await this.setRole(user, 'user');
-            return this.getById(user.id);
+            return this.getById(user.id, registration);
         } catch (e) {
             return e
         }
@@ -161,8 +161,9 @@ export class UsersService {
         return user;
     }
 
-    async getById(id: number) {
-        const user = await this.userRepository.findOne({
+    async getById(id: number, permissions: boolean = false) {
+
+        const query = {
             where: {id},
             include: {
                 model: Role,
@@ -180,7 +181,20 @@ export class UsersService {
                 }
             },
 
-        });
+        };
+
+        if (permissions) {
+            query.include['include'] = [{
+                model: Role,
+                attributes: ['id', 'name', 'description'],
+                through: {
+                    attributes: []
+                }
+            }]
+        }
+
+        const user = await this.userRepository.findOne(query);
+
         return user;
     }
 
