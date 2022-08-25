@@ -21,6 +21,7 @@ export class AuthService {
         if (candidate) {
             throw new HttpException('This email already taken', HttpStatus.BAD_REQUEST);
         }
+        //const hashPassword = await bcrypt.hash(userDto.password, 5);
         const user = await this.userService.createUser({...userDto, password: userDto.password}, true);
         return this.generateToken(user)
     }
@@ -35,11 +36,11 @@ export class AuthService {
     private async validateUser(userDto: CreateUserDto) {
         const user = await this.userService.getByEmail(userDto.email);
 
-        if (user) {
-            const passwordEquals = await bcrypt.compare(userDto.password, user.password);
-            if (passwordEquals) {
-                return user;
-            }
+        console.log(await bcrypt.compare(userDto.password, user.password), user.password, userDto.password)
+
+        const passwordEquals = await bcrypt.compare(userDto.password, user.password);
+        if (user && passwordEquals) {
+            return user;
         }
         throw new UnauthorizedException({message: 'Incorrect email or password'})
     }
