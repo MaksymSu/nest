@@ -4,7 +4,6 @@ import {
     HttpException,
     HttpStatus,
     Injectable,
-    UnauthorizedException
 } from "@nestjs/common";
 import {JwtService} from "@nestjs/jwt";
 import {Observable} from "rxjs";
@@ -27,7 +26,6 @@ export class RolesGuard implements CanActivate {
             if (!requiredRoles) {
                 return true;
             }
-
 
             return req.user.roles.some(role => (requiredRoles.includes(role.name) || role.children.some(perm => requiredRoles.includes(perm.name))));
 
