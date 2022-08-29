@@ -5,6 +5,8 @@ import {CreateUserDto} from "./dto/create-user.dto";
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
 import {SetRoleDto} from "./dto/set-role.dto";
 import {JwtAuthGuard} from "../auth/jwt.auth.guard";
+import {RolesGuard} from "../auth/roles.guard";
+import {Roles} from "../auth/roles-auth.decorator";
 
 
 @Controller('api/users')
@@ -14,7 +16,8 @@ export class UsersController {
 
     @ApiOperation({summary: 'Getting all users + roles'})
     @ApiResponse({status: 200, type: User})
-    @UseGuards(JwtAuthGuard)
+    @Roles("admin")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     getAll(@Query() params ) {
 

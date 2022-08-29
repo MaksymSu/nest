@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {JwtAuthGuard} from "./auth/jwt.auth.guard";
 
 const port = process.env.PORT || 3000;
 
@@ -17,6 +18,7 @@ async function bootstrap() {
     SwaggerModule.setup('/api/docs', app, document);
 
     app.enableCors();
+    //app.useGlobalGuards(JwtAuthGuard);
     await app.listen(port, () => console.log(`Server started on port ${port}`));
 }
 bootstrap();
