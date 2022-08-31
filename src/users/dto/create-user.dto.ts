@@ -14,6 +14,5 @@ export class CreateUserDto {
     readonly password: string;
 
     @ApiProperty({example: 'John Lennon', description: 'name'})
-    @Length(0, 30, {message: 'name is too long'})
     readonly name: string;
 }

@@ -25,6 +25,10 @@ export class UsersController {
         return this.usersService.getAllUsers(params);
     }
 
+    @ApiOperation({summary: 'Users in total'})
+    @ApiResponse({status: 200})
+    @Roles("admin", "viewUsers")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/count')
     getCount(@Query() params) {
         return this.usersService.getUsersN(params);
