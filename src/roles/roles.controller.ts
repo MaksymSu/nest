@@ -3,6 +3,7 @@ import {RolesService} from "./roles.service";
 import {CreateRoleDto} from "./dto/create-role.dto";
 import {SetPermissionDto} from "./dto/set-permission.dto";
 import {SetPermissionsDtoByIds} from "./dto/set-permissions-by-ids.dto";
+import {ApiOperation, ApiResponse} from "@nestjs/swagger";
 
 @Controller('api/roles')
 export class RolesController {
@@ -18,6 +19,8 @@ export class RolesController {
         return this.rolesService.updateRole(roleDto);
     }
 
+    //@ApiOperation({summary: 'Getting roles + permissions'})
+    //@ApiResponse({status: 200, type: [Role]})
     @Get()
     getAll() {
         return this.rolesService.getAllRoles();

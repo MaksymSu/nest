@@ -2,6 +2,7 @@ import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescrip
 import {UserRole} from "./users-roles.model";
 import {User} from "../users/users.model";
 import {RolePermission} from "./roles-permissions.model";
+import {ApiProperty} from "@nestjs/swagger";
 
 interface RoleCreationAttrs {
     name: string;
@@ -11,6 +12,7 @@ interface RoleCreationAttrs {
 @Table({tableName: 'roles'})
 export class Role extends Model<Role, RoleCreationAttrs> {
 
+    @ApiProperty({example: '1', description: 'unique id'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 

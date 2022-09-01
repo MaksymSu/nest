@@ -15,9 +15,9 @@ export class UsersController {
 
     constructor(private usersService: UsersService) {}
 
-    @ApiOperation({summary: 'Getting all users + roles'})
-    @ApiResponse({status: 200, type: User})
-    @Roles("admin", "viewUsers")
+    @ApiOperation({summary: 'Getting filrered, ordered, paginated users + roles'})
+    @ApiResponse({status: 200, type: [User]})
+    @Roles('admin')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     getAll(@Query() params ) {
@@ -27,29 +27,38 @@ export class UsersController {
 
     @ApiOperation({summary: 'Users in total'})
     @ApiResponse({status: 200})
-    @Roles("admin", "viewUsers")
+    @Roles('admin')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/count')
     getCount(@Query() params) {
         return this.usersService.getUsersN(params);
     }
 
+    //@Roles("admin")
+    //@UseGuards(JwtAuthGuard, RolesGuard)
     @UsePipes(ValidationPipe)
     @Post()
     createUser(@Body() userDto: CreateUserDto) {
         return this.usersService.createUser(userDto);
     }
 
+    //@Roles("admin")
+    //@UseGuards(JwtAuthGuard, RolesGuard)
+    @UsePipes(ValidationPipe)
     @Put()
     updateUser(@Body() userDto: CreateUserDto) {
         return this.usersService.updateUser(userDto)
     }
 
+    //@Roles("admin")
+    //@UseGuards(JwtAuthGuard, RolesGuard)
     @Delete('/:email')
     delete(@Param('email') email: string) {
         return this.usersService.deleteUser(email);
     }
 
+   // @Roles()
+   // @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/:email')
     getByEmail(@Param('email') email: string) {
         return this.usersService.getByEmail(email);
@@ -60,11 +69,16 @@ export class UsersController {
         return this.usersService.getByRole(roleName);
     }
 
+    //@Roles("admin", "hrManager")
+    //@UseGuards(JwtAuthGuard, RolesGuard)
     @Post('/role')
     setRole(@Body() setDto: SetRoleDto) {
         return this.usersService.setRoleById(setDto)
     }
 
+
+    //@Roles("admin")
+    //@UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/fill/:n')
     fillUsers(@Param('n') n: number) {
         return this.usersService.fill(n)
