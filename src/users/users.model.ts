@@ -26,7 +26,7 @@ export class User extends Model<User, UserCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: true})
     name: string;
 
-    //@ApiProperty({example: 'admin', description: 'roles'})
+    @ApiProperty({example: '[{ "id": 12, "name": "admin", "description": "main admin", "type": 1}]', description: 'roles'})
     @BelongsToMany(() => Role, () => UserRole)
     roles: Role[];
 
