@@ -5,11 +5,11 @@ export class CreateUserDto {
 
     readonly id: number;
 
-    @ApiProperty({example: 'user@mail.com', description: 'email address'})
+    @ApiProperty({example: 'admin8@gmail.com', description: 'email address'})
     @IsEmail({}, {message: 'Incorrect email'})
     readonly email: string;
 
-    @ApiProperty({example: '123456', description: 'password'})
+    @ApiProperty({example: '222111qqq', description: 'password'})
     @Length(4, 20, {message: 'password length: 4 - 20 symbols'})
     readonly password: string;
 

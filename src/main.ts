@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
-import {JwtAuthGuard} from "./auth/jwt.auth.guard";
 
 const port = process.env.PORT || 3000;
 
@@ -13,6 +12,7 @@ async function bootstrap() {
         .setDescription('RBAC administrator')
         .setVersion('1.0.0')
         .addTag('LuckyBot')
+        .addBearerAuth(undefined, 'defaultBearerAuth')
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('/api/docs', app, document);
