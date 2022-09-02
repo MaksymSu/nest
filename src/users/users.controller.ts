@@ -9,6 +9,7 @@ import {RolesGuard} from "../auth/roles.guard";
 import {Roles} from "../auth/roles-auth.decorator";
 import {ValidationPipe} from "../pipes/validation.pipe";
 import {GetUsersDto} from "./dto/get-users.dto";
+import {ReplaceRolesDto} from "./dto/replace-roles.dto";
 
 @ApiTags('Users')
 @ApiBearerAuth('defaultBearerAuth')
@@ -17,7 +18,7 @@ export class UsersController {
 
     constructor(private usersService: UsersService) {}
 
-    @ApiOperation({summary: 'Getting filrered, ordered, paginated users + roles'})
+    @ApiOperation({summary: 'Getting filtered, ordered, paginated users + roles'})
     @ApiResponse({status: 200, type: [User]})
     @Roles('admin')
     @UseGuards(JwtAuthGuard, RolesGuard)
@@ -86,5 +87,14 @@ export class UsersController {
         return this.usersService.fill(n)
     }
 
+    @ApiOperation({summary: 'Replace role for all users'})
+    @ApiResponse({status: 200, type: [User]})
+    @Roles('admin')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Post('/role/replace')
+    changeUserRoles(@Body() params: ReplaceRolesDto) {
+        console.log(params)
+        return this.usersService.changeRolesByName(params.from, params.to)
+    }
 
 }

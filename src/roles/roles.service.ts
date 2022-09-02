@@ -44,14 +44,7 @@ export class RolesService {
             where: {name},
             include: {
                 model: Role,
-                attributes: ['name', 'type'],
-                include: [{
-                    model: Role,
-                    attributes: ['name', 'type'],
-                    through: {
-                        attributes: []
-                    }
-                }],
+                attributes: ['id', 'name', 'description', 'type'],
                 through: {
                     attributes: [],
                 }
@@ -93,6 +86,7 @@ export class RolesService {
 
             return 'ok';
         }
+
 
         return 'err'
     }

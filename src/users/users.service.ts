@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {User} from "./users.model";
 import {InjectModel} from "@nestjs/sequelize";
 import {CreateUserDto} from "./dto/create-user.dto";
@@ -203,9 +203,12 @@ export class UsersService {
             include: {
                 model: Role,
                 where: {name: roleName},
-                attributes: [],
+                attributes: ['id', 'name', 'description', 'type'],
+                through: {
+                    attributes: [],
+                }
             },
-            //attributes: ['email']
+            attributes: ['id', 'name', 'email'],
         });
         return users;
     }
@@ -234,6 +237,19 @@ export class UsersService {
         } catch (e) {
             return e;
         }
+    }
+
+    async changeRolesByName(from: string, to: string) {
+
+        if (!await this.roleService.getRoleByName(from) || !await this.roleService.getRoleByName(to)) {
+            throw new HttpException('Role not found', HttpStatus.BAD_REQUEST)
+        }
+
+        const users = await this.getByRole(from);
+
+        await this.sequelize.transaction(async t => await users.forEach(user => user.$set('roles', [to])));
+
+        return await this.getByRole(to)
     }
 
 
