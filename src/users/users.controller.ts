@@ -8,6 +8,7 @@ import {JwtAuthGuard} from "../auth/jwt.auth.guard";
 import {RolesGuard} from "../auth/roles.guard";
 import {Roles} from "../auth/roles-auth.decorator";
 import {ValidationPipe} from "../pipes/validation.pipe";
+import {GetUsersDto} from "./dto/get-users.dto";
 
 @ApiTags('Users')
 @ApiBearerAuth('defaultBearerAuth')
@@ -21,31 +22,7 @@ export class UsersController {
     @Roles('admin')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
-    @ApiParam({
-        name: 'order',
-        type: 'string',
-        description: 'Sort order',
-        required: false
-    })
-    @ApiParam({
-        name: 'offset',
-        type: 'string',
-        description: 'Page start from this offset, for pagination',
-        required: false
-    })
-    @ApiParam({
-        name: 'n',
-        type: 'string',
-        description: 'Users per page, for pagination',
-        required: false
-    })
-    @ApiParam({
-        name: 'filter',
-        type: 'string',
-        description: 'Filter by name or/and email or/and role. For example: ".com Bob Marley admi"',
-        required: false
-    })
-    getAll(@Query() params ) {
+    getAll(@Query() params: GetUsersDto ) {
 
         return this.usersService.getAllUsers(params);
     }
