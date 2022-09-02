@@ -92,9 +92,8 @@ export class UsersController {
     @Roles('admin')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('/role/replace')
-    changeUserRoles(@Body() params: ReplaceRolesDto) {
-        console.log(params)
-        return this.usersService.changeRolesByName(params.from, params.to)
+    replaceRoles(@Body() params: ReplaceRolesDto) {
+        return this.usersService.replaceRolesByName(params.from, params.to)
     }
 
 }

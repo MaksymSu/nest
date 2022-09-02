@@ -239,15 +239,17 @@ export class UsersService {
         }
     }
 
-    async changeRolesByName(from: string, to: string) {
+    async replaceRolesByName(from: string, to: string) {
 
-        if (!await this.roleService.getRoleByName(from) || !await this.roleService.getRoleByName(to)) {
+        const roleTo = await this.roleService.getRoleByName(to);
+
+        if (!await this.roleService.getRoleByName(from) || !roleTo) {
             throw new HttpException('Role not found', HttpStatus.BAD_REQUEST)
         }
 
         const users = await this.getByRole(from);
 
-        await this.sequelize.transaction(async t => await users.forEach(user => user.$set('roles', [to])));
+        await this.sequelize.transaction(async t => users.forEach(user => user.$set('roles', [roleTo.id])));
 
         return await this.getByRole(to)
     }
