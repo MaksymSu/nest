@@ -1,10 +1,11 @@
-import {forwardRef, Inject, Injectable} from '@nestjs/common';
+import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Role} from "./roles.model";
 import {CreateRoleDto} from "./dto/create-role.dto";
 import {SetPermissionDto} from "./dto/set-permission.dto";
 import {SetPermissionsDtoByIds} from "./dto/set-permissions-by-ids.dto";
 import {UsersService} from "../users/users.service";
+import {CrudException} from "../exceptions/crud.exeption";
 
 @Injectable()
 export class RolesService {
@@ -82,13 +83,11 @@ export class RolesService {
         const users = await this.userService.getByRole(name);
 
         if(users.length === 0) {
-            await this.roleRepository.destroy({where: {name}});
-
-            return 'ok';
+            const res = await this.roleRepository.destroy({where: {name}});
+            return res;
         }
 
-
-        return 'err'
+        throw new CrudException('This role is assigned')
     }
 
     async setRolePermission(dto: SetPermissionDto) {
