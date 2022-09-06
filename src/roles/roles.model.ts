@@ -12,10 +12,11 @@ interface RoleCreationAttrs {
 @Table({tableName: 'roles'})
 export class Role extends Model<Role, RoleCreationAttrs> {
 
-    @ApiProperty({example: '1', description: 'unique id'})
+    @ApiProperty({example: 80, description: 'unique id'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
+    @ApiProperty({example: 'user', description: 'Role name'})
     @Column({type: DataType.STRING, allowNull: false, unique: true})
     name: string;
 

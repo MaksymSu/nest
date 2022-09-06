@@ -1,7 +1,10 @@
 import {Body, Controller, Post} from '@nestjs/common';
 import {AuthService} from "./auth.service";
 import {CreateUserDto} from "../users/dto/create-user.dto";
+import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
 
+@ApiTags('Auth')
+@ApiBearerAuth('defaultBearerAuth')
 @Controller('/api/auth')
 export class AuthController {
     constructor(private authService: AuthService) {}

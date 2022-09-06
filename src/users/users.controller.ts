@@ -20,7 +20,7 @@ export class UsersController {
 
     @ApiOperation({summary: 'Getting filtered, ordered, paginated users + roles'})
     @ApiResponse({status: 200, type: [User]})
-    @Roles('admin')
+    @Roles('viewUsers')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     getAll(@Query() params: GetUsersDto ) {
@@ -28,60 +28,76 @@ export class UsersController {
         return this.usersService.getAllUsers(params);
     }
 
-    @ApiOperation({summary: 'Users in total'})
+    @ApiOperation({summary: 'Cet users total count'})
     @ApiResponse({status: 200})
-    @Roles('admin')
+    @Roles('viewUsers')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/count')
     getCount(@Query() params) {
         return this.usersService.getUsersN(params);
     }
 
-    //@Roles("admin")
-    //@UseGuards(JwtAuthGuard, RolesGuard)
+    @ApiOperation({summary: 'Add new user and assign default role for him'})
+    @ApiResponse({status: 201, type: [User]})
+    @Roles("addUsers")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @UsePipes(ValidationPipe)
     @Post()
     createUser(@Body() userDto: CreateUserDto) {
         return this.usersService.createUser(userDto);
     }
 
-    //@Roles("admin")
-    //@UseGuards(JwtAuthGuard, RolesGuard)
+    @ApiOperation({summary: 'Update user data'})
+    @ApiResponse({status: 200, type: [User]})
+    @Roles("updateUsers")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @UsePipes(ValidationPipe)
     @Put()
     updateUser(@Body() userDto: CreateUserDto) {
         return this.usersService.updateUser(userDto)
     }
 
-    //@Roles("admin")
-    //@UseGuards(JwtAuthGuard, RolesGuard)
+    @ApiOperation({summary: 'Delete user'})
+    @ApiResponse({status: 200, type: [User]})
+    @Roles("deleteUsers")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete('/:email')
     delete(@Param('email') email: string) {
         return this.usersService.deleteUser(email);
     }
 
-   // @Roles()
-   // @UseGuards(JwtAuthGuard, RolesGuard)
+    @ApiOperation({summary: 'Get user by email with his role and permissions'})
+    @ApiResponse({status: 200, type: [User]})
+    @Roles("viewUsers")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/:email')
     getByEmail(@Param('email') email: string) {
         return this.usersService.getByEmail(email);
     }
 
+    @ApiOperation({summary: 'Get users by role'})
+    @ApiResponse({status: 200, type: [User]})
+    @Roles("admin")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/role/:role')
     getByRole(@Param('role') roleName: string) {
         return this.usersService.getByRole(roleName);
     }
 
-    //@Roles("admin", "hrManager")
-    //@UseGuards(JwtAuthGuard, RolesGuard)
+    @ApiOperation({summary: 'Assign role to user'})
+    @ApiResponse({status: 200, type: [User]})
+    @Roles("assignRole")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('/role')
     setRole(@Body() setDto: SetRoleDto) {
         return this.usersService.setRoleById(setDto)
     }
 
 
-    //@Roles("admin")
-    //@UseGuards(JwtAuthGuard, RolesGuard)
+    @ApiOperation({summary: 'Fill users table randomly for tasting'})
+    @ApiResponse({status: 200})
+    @Roles("admin")
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/fill/:n')
     fillUsers(@Param('n') n: number) {
         return this.usersService.fill(n)
