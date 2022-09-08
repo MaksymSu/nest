@@ -2,7 +2,7 @@ import {UsersService} from "./users.service";
 import {User} from "./users.model";
 import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes} from "@nestjs/common";
 import {CreateUserDto} from "./dto/create-user.dto";
-import {ApiBearerAuth, ApiHeader, ApiOperation, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SetRoleDto} from "./dto/set-role.dto";
 import {JwtAuthGuard} from "../auth/jwt.auth.guard";
 import {RolesGuard} from "../auth/roles.guard";
@@ -94,7 +94,7 @@ export class UsersController {
     }
 
 
-    @ApiOperation({summary: 'Fill users table randomly for tasting'})
+    @ApiOperation({summary: 'Fill users table randomly for testing'})
     @ApiResponse({status: 200})
     @Roles("admin")
     @UseGuards(JwtAuthGuard, RolesGuard)

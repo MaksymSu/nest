@@ -11,6 +11,6 @@ export class CreateRoleDto {
     @ApiProperty({example: 1, description: '1 - role, 2 - permission (child role)'})
     readonly type: number;
 
-    @ApiProperty({example: 'description', description: 'Role description'})
+    @ApiProperty({example: 'Simple user', description: 'Role description'})
     readonly description: string;
 }

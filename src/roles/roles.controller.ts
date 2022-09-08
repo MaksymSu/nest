@@ -18,41 +18,63 @@ export class RolesController {
 
     @ApiOperation({summary: 'Add new role'})
     @ApiResponse({status: 201, type: [Role]})
-    @Roles('admin')
+    @Roles('addRoles')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     createRole(@Body() roleDto: CreateRoleDto) {
         return this.rolesService.createRole(roleDto);
     }
 
+    @ApiOperation({summary: 'Update role'})
+    @ApiResponse({status: 200, type: [Role]})
+    @Roles('updateRoles')
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Put()
     updateRole(@Body() roleDto: CreateRoleDto) {
         return this.rolesService.updateRole(roleDto);
     }
 
-    //@ApiOperation({summary: 'Getting roles + permissions'})
-    //@ApiResponse({status: 200, type: [Role]})
+    @ApiOperation({summary: 'Get all roles with permissions'})
+    @ApiResponse({status: 200, type: [Role]})
+    @Roles('viewUsers')
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     getAll() {
         return this.rolesService.getAllRoles();
     }
 
+    @ApiOperation({summary: 'Delete role. Role can\'t be deleted while assigned'})
+    @ApiResponse({status: 200})
+    @Roles('deleteRoles')
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete('/:name')
     deleteRole(@Param('name') name: string) {
         return this.rolesService.deleteRole(name);
     }
 
+    @ApiOperation({summary: 'Get role by name with permissions'})
+    @ApiResponse({status: 200, type: Role})
+    @Roles('admin')
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('/:name')
     getByName(@Param('name') name: string) {
         return this.rolesService.getRoleByName(name);
     }
 
+    @ApiOperation({summary: 'Assign permission to role'})
+    @ApiResponse({status: 200, type: Role})
+    @Roles('assignRole')
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('/permit')
     setRolePermission(@Body() permissionDto: SetPermissionDto) {
         //console.log('ok', permissionDto);
         return this.rolesService.setRolePermission(permissionDto);
     }
 
+    @ApiOperation({summary: 'Assign permissions to role by ids'})
+    @ApiResponse({status: 200, type: Role})
+    @Roles('assignRole')
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('/set')
     setPermissionsByIds(@Body() dto: SetPermissionsDtoByIds) {
         return this.rolesService.setRolePermissionsByIds(dto)

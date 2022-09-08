@@ -249,7 +249,7 @@ export class UsersService {
 
         const users = await this.getByRole(from);
 
-        await this.sequelize.transaction(async t => users.forEach(user => user.$set('roles', [roleTo.id])));
+        await this.sequelize.transaction(async t2 => await users.forEach(user => user.$set('roles', [roleTo.id])));
 
         return await this.getByRole(to)
     }
