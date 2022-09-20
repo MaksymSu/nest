@@ -22,6 +22,9 @@ export class AuthService {
             throw new HttpException('This email already taken', HttpStatus.BAD_REQUEST);
         }
         //const hashPassword = await bcrypt.hash(userDto.password, 5);
+
+        console.log(userDto)
+
         const user = await this.userService.createUser({...userDto, password: userDto.password}, true);
         return this.generateToken(user)
     }
